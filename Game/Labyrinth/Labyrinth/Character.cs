@@ -7,29 +7,32 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Labyrinth
 {
-    class Character
-    {
-        string Name;               //Name of the Character.
-        string className;          //Class of the character; Human, Monster or Mecha.
+    class Character {
+		#region Fields
+		//string Name;				//Name of the Character.
+        string className;			//Class of the character; Human, Monster or Mecha.
 
-        int health;                //Current health of the character.
-        int maxhealth;             //Maximum health of the character.
-        int att;                //How much attack it deals.
-        int def;               //How much attack it takes.
-        int speed;                 //Speed between subsequent attacks, also modifier to movement speed.
-        double acc;           //hit rate modifier
+        int health;					//Current health of the character.
+        int maxhealth;				//Maximum health of the character.
+        int att;					//How much attack it deals.
+        int def;					//How much attack it takes.
+        int speed;					//Speed between subsequent attacks, also modifier to movement speed.
+        double acc;					//hit rate modifier
 
-        int exp;                   //Current experience; required for level up.
-        int level;                 //Current level; determines the stats of the character; determines the amount of exp succesful 
-                                   //attacks gets; determines required exp for next level.
+        int exp;					//Current experience; required for level up.
+        int level;					//Current level; determines the stats of the character; determines the amount of exp succesful 
+									//attacks gets; determines required exp for next level.
 
-        public Texture2D characterTexture;     // Animation representing the character.
-        public Vector2 Position;            // the position of the character.
-        public bool Active;                 // State of the player.
+        public Texture2D characterTexture;		// Animation representing the character.
+        public Vector2 Position;				// the position of the character.
+        public bool Active;						// State of the player.
 
         static Random rand = new Random();  //Random number generator
+		#endregion
 
-        // Get the width of the player ship
+
+		#region Properties
+		// Get the width of the player ship
         public int Width
         {
             get { return characterTexture.Width; }
@@ -41,8 +44,10 @@ namespace Labyrinth
             get { return characterTexture.Height; }
         }
 
+		public string Name{ get; set; }					// Name of the Character.
+		#endregion
 
-        public void Initialize(Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
+		public void Initialize(Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
                                 int speed, double acc, int level = 1, string className = "")
         {
             characterTexture = texture;
@@ -76,8 +81,8 @@ namespace Labyrinth
        
         int expToLevel(int level)
          {
-    // Exp to level x = 128*x^2
-    return 128 * level * level;
+			// Exp to level x = 128*x^2
+			return 128 * level * level;
          }
     
         
