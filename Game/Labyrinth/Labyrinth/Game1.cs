@@ -92,8 +92,8 @@ namespace Labyrinth
             // Start drawing
             spriteBatch.Begin();
 
-            // Draw the Player
-            player.Draw(spriteBatch);
+				// Draw the Player
+				player.Draw(ref spriteBatch);
 
             // Stop drawing
             spriteBatch.End();

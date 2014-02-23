@@ -23,7 +23,7 @@ namespace Labyrinth
         int level;					//Current level; determines the stats of the character; determines the amount of exp succesful 
 									//attacks gets; determines required exp for next level.
 
-        public Texture2D characterTexture;		// Animation representing the character.
+        //public Texture2D characterTexture;	// Animation representing the character.
         public Vector2 Position;				// the position of the character.
         public bool Active;						// State of the player.
 
@@ -33,24 +33,27 @@ namespace Labyrinth
 
 		#region Properties
 		// Get the width of the player ship
-        public int Width
-        {
-            get { return characterTexture.Width; }
-        }
+		// Texture2D provided a way to access properties withtin the texture
+		//public int Width
+		//{
+		//	get { return CharacterTexture.Width; }
+		//}
 
         // Get the height of the player ship
-        public int Height
-        {
-            get { return characterTexture.Height; }
-        }
+		// Texture2D provided a way to access properties withtin the texture
+		//public int Height
+		//{
+		//	get { return CharacterTexture.Height; }
+		//}
 
-		public string Name{ get; set; }					// Name of the Character.
+		public string Name{ get; set; }								// Name of the Character.
+		public Texture2D CharacterTexture{ get; private set; }		// Animation representing the character. 
 		#endregion
 
 		public void Initialize(Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
                                 int speed, double acc, int level = 1, string className = "")
         {
-            characterTexture = texture;
+            CharacterTexture = texture;
 
             Position = position;
 
@@ -75,7 +78,7 @@ namespace Labyrinth
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(characterTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(CharacterTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
        
