@@ -8,6 +8,6 @@ namespace Labyrinth{
 	static class ControlVariables{
 
 		// Class of the character; Human, Monster or Mecha.
-		public static enum ClassName{ HUMAN, MONSTER, MECHA, NULL };
+		public enum ClassName{ HUMAN, MONSTER, MECHA, NULL };
 	}
 }

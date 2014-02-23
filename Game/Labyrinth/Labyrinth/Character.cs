@@ -51,6 +51,13 @@ namespace Labyrinth
 		#endregion
 
 
+
+		#region Constructor
+		public Character(){}
+		#endregion
+
+
+
 		#region Methods
 		public void Initialize(Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
                                 int speed, double acc, int level = 1, className playerClass = ControlVariables.ClassName.NULL)

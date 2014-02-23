@@ -9,22 +9,39 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+// control the character class within the game
+using className = Labyrinth.ControlVariables.ClassName;
+
 namespace Labyrinth
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
-    {
-        GraphicsDeviceManager graphics;
+    public class Game1 : Microsoft.Xna.Framework.Game {
+
+		#region Fields
+		GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Character player;
+		// game settings
+		int dimensionWdith = 1000;
+		int dimensionHeight = 600;
 
-        public Game1()
+
+
+        Character player;
+		#endregion
+
+
+		public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+			// set the default dimension of the game
+			graphics.PreferredBackBufferWidth = dimensionWdith;
+			graphics.PreferredBackBufferHeight = dimensionHeight;
+			graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -53,7 +70,7 @@ namespace Labyrinth
             // Load the player resources 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
            
-            player.Initialize(Content.Load<Texture2D>("player"), playerPosition, string.Empty, 100, 100, 5, 3, 3, 50.0, 1 , "Human" );
+            player.Initialize(Content.Load<Texture2D>("player"), playerPosition, string.Empty, 100, 100, 5, 3, 3, 50.0, 1 , className.HUMAN );
         }
 
         /// <summary>
@@ -93,7 +110,7 @@ namespace Labyrinth
             spriteBatch.Begin();
 
 				// Draw the Player
-				player.Draw(ref spriteBatch);
+				//player.Draw(ref spriteBatch);
 
             // Stop drawing
             spriteBatch.End();
