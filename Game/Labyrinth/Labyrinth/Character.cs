@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG			// use to test the class
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using className = Labyrinth.ControlVariables.ClassName;
+using animated = Labyrinth.ControlVariables.AnimationSequence;
+
 
 namespace Labyrinth
 {
@@ -23,8 +27,15 @@ namespace Labyrinth
         int level;					//Current level; determines the stats of the character; determines the amount of exp succesful 
 									//attacks gets; determines required exp for next level.
 
-       
-        static Random rand = new Random();  //Random number generator
+		// time for animation
+		float timer = 0.0f;
+		float timeInterval = 300.0f;	// length of time each image is display XNA default fps is 60fps or about 16.66667ms per frame
+		int currentFrame = 0;
+		int characterTextWidth = 42;	// in the test sprite sheet each image is within a 42x62 square, change this variable when a new sprite is used
+		int characterTextHeight = 62;
+		int maxNumberOfFrame = 4;		// the test sprite contains 4 frames
+		Rectangle characterRect;
+
 		#endregion
 
 
@@ -48,18 +59,30 @@ namespace Labyrinth
 		public Texture2D CharacterTexture{ get; private set; }		// Animation representing the character. 
 		public Vector2 Position{ get; set; }						// the position of the character.
 		public bool Active{ get; set; }								// State of the player.
+
+		public animated Action{ get; set; }					// affects the animated action of the sprite
 		#endregion
 
 
 
 		#region Constructor
-		public Character(){}
+		public Character(){
+			// for the character animation
+			characterRect = new Rectangle(currentFrame * characterTextWidth, 0, characterTextWidth, characterTextHeight);
+
+#if(DEBUG)
+			Action = animated.SPIN;
+#else
+			CurrentAction = animated.NULL;
+#endif
+
+		}
 		#endregion
 
 
 
 		#region Methods
-		public void Initialize(Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
+		public void Initialize(ref Texture2D texture, Vector2 position, string name, int health, int maxhealth, int att, int def,
                                 int speed, double acc, int level = 1, className playerClass = ControlVariables.ClassName.NULL)
         {
             CharacterTexture = texture;
@@ -78,7 +101,8 @@ namespace Labyrinth
             this.level = level;
             this.Class = playerClass;
 
-
+			if( Class == className.MONSTER )			// in the test sprite sheet, the monster y coordinate starts at 62
+				characterRect.Y = 62;
         }
 
 		int expToLevel(int level)
@@ -113,7 +137,7 @@ namespace Labyrinth
 				{
 					// Randomly increase health, but always give a
 					// chunk proportional to the creature's endurance
-					healthBoost = 10 + rand.Next(4) + this.maxhealth / 4;
+					healthBoost = 10 + ControlVariables.rand.Next(4) + this.maxhealth / 4;
 				}
 				else
 				{
@@ -127,7 +151,7 @@ namespace Labyrinth
 				{
 					attBoost = 1;
 					speedBoost = 1;
-					if(rand.Next(2) == 0) defBoost = 1;
+					if(ControlVariables.rand.Next(2) == 0) defBoost = 1;
 				}
 				// Monster gets same as for human but favour attack and speed
 				// instead. 
@@ -135,7 +159,7 @@ namespace Labyrinth
 				{
 					attBoost = 1;
 					defBoost = 1;
-					if(rand.Next(2) == 0) speedBoost = 1;
+					if(ControlVariables.rand.Next(2) == 0) speedBoost = 1;
 				}
  
 				// Adjust all of the variables accordingly
@@ -152,16 +176,72 @@ namespace Labyrinth
 		#endregion
 
 
+		#region Character Action
+		void SpinningCW(){
+
+		}
+
+		#endregion
 
 
 
+		public void Update(ref GameTime gameTimer) {
 
-		public void Update()
-        {
-        }
+			#region Spining animation
+			if( Action == animated.SPIN ){
+				timer += (float)gameTimer.ElapsedGameTime.Milliseconds;
+				if( timer >= timeInterval ){
+					timer = 0.0f;
+					if( (++currentFrame) >= maxNumberOfFrame )
+						currentFrame = 0;
+				}
+
+				characterRect.X = currentFrame * characterTextWidth;
+			}
+			#endregion
+
+
+		}
 
         public void Draw(ref SpriteBatch spriteBatch){
-            spriteBatch.Draw(CharacterTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+			// draw is based on the current test sprite sheet, the top half is the human sprite , the bottom half is the monster
+			// each character has only one class type
+			#region Human animation
+			if( Class == className.HUMAN ){
+				if( Action == animated.SPIN ){
+					spriteBatch.Draw( CharacterTexture, 
+									  new Rectangle( (int)(Position.X + 0.5f), (int)(Position.Y + 0.5f), characterTextWidth, characterTextHeight ), // adding .05 to the position insured accracy when the number get's truncated.
+									  characterRect,
+									  Color.White);
+				}
+				else if( Action == animated.NULL ){
+					spriteBatch.Draw( CharacterTexture, 
+									  new Rectangle( (int)(Position.X + 0.5f), (int)(Position.Y + 0.5f), characterTextWidth, characterTextHeight ), 
+									  new Rectangle( 0, 0, 42, 62),
+									  Color.White);
+				}
+			}
+			#endregion
+
+			#region Monster animation
+			else if( Class == className.MONSTER ){
+				if( Action == animated.SPIN ){
+					spriteBatch.Draw( CharacterTexture, 
+									  new Rectangle( (int)(Position.X + 0.5f), (int)(Position.Y + 0.5f), characterTextWidth, characterTextHeight ), // adding .05 to the position insured accracy when the number get's truncated.
+									  characterRect,
+									  Color.White);
+				}
+				else if( Action == animated.NULL ){
+					spriteBatch.Draw( CharacterTexture, 
+									  new Rectangle( (int)(Position.X + 0.5f), (int)(Position.Y + 0.5f), characterTextWidth, characterTextHeight ), 
+									  new Rectangle( 0, 62, 42, 62),
+									  Color.White);
+				}
+			}
+			#endregion
+
+			//spriteBatch.Draw(CharacterTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
        

@@ -9,5 +9,9 @@ namespace Labyrinth{
 
 		// Class of the character; Human, Monster or Mecha.
 		public enum ClassName{ HUMAN, MONSTER, MECHA, NULL };
+
+		public enum AnimationSequence{ STAND, WALK, RUN, SPIN, DEAD, NULL };
+
+		public static Random rand = new Random();  //Random number generator
 	}
 }
