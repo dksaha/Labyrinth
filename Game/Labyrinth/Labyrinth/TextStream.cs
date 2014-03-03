@@ -41,8 +41,8 @@ namespace TextInput{
 					}
 				}//end nested for
 
-				if(!matchFound) {
-					switch(pressedKeys[i]) {
+				if(!matchFound){
+					switch(pressedKeys[i]){
 
 						#region Digits
 						case Keys.D0:
@@ -655,7 +655,7 @@ namespace TextInput{
 							break;
 
 						case Keys.Enter:
-							userString = userString + "\n";
+							userString = userString + System.Environment.NewLine;
 							break;
 						#endregion
 					}//end switch	

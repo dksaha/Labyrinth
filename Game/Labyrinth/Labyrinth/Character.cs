@@ -29,7 +29,7 @@ namespace Labyrinth
 
 		// time for animation
 		float timer = 0.0f;
-		float timeInterval = 300.0f;	// length of time each image is display XNA default fps is 60fps or about 16.66667ms per frame
+		float timeInterval = 250.0f;	// length of time each image is display XNA default fps is 60fps or about 16.66667ms per frame
 		int currentFrame = 0;
 		int characterTextWidth = 42;	// in the test sprite sheet each image is within a 42x62 square, change this variable when a new sprite is used
 		int characterTextHeight = 62;
@@ -60,7 +60,7 @@ namespace Labyrinth
 		public Vector2 Position{ get; set; }						// the position of the character.
 		public bool Active{ get; set; }								// State of the player.
 
-		public animated Action{ get; set; }					// affects the animated action of the sprite
+		public animated Action{ get; set; }							// affects the animated action of the sprite, specified which animation sequence to draw or render to screen.
 		#endregion
 
 
@@ -73,9 +73,10 @@ namespace Labyrinth
 #if(DEBUG)
 			Action = animated.SPIN;
 #else
-			CurrentAction = animated.NULL;
+			Action = animated.NULL;
 #endif
 
+			exp = 0;
 		}
 		#endregion
 
